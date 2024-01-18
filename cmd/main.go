@@ -2,43 +2,43 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"log"
-
 	"github.com/aaron-smits/templ-starter/handler"
-	"github.com/aaron-smits/templ-starter/model"
+	// "github.com/aaron-smits/templ-starter/db"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	// supa "github.com/nedpals/supabase-go"
 )
 
-type DB struct {
-}
+
 
 func main() {
+	app := echo.New()
+	// Middleware
+	app.Use(middleware.Logger())
+	app.Use(middleware.Recover())
+	app.Use(withUser)
+	// Load .env file
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		app.Logger.Fatal(err)
 	}
-	db, err := model.NewPostgresDB()
-	if err != nil {
-		log.Fatalf("Error creating database: %v", err)
-	}
-	if err = db.CreateUserTable(); err != nil {
-		log.Fatalf("Error creating user table: %v", err)
-	}
-	fmt.Println("Database created")
-	app := echo.New()
-	userHandler := handler.UserHandler{}
-	app.Use(withUser)
 	
-	app.GET("/", func(c echo.Context) error {
-		return c.String(200, "Hello, World!")
-	})
+	// DB
+	// db, err := db.NewPostgresDB()
+	// if err != nil {
+	// 	app.Logger.Fatal(err)
+	// }
+	// app.Logger.Fatal(db.CreateUserTable())
 
+	userHandler := handler.UserHandler{}
+	homeHandler := handler.HomeHandler{}
+	// Routes
+	app.GET("/", homeHandler.HandleHomeShow)
 	app.GET("/users/:id", userHandler.HandleUserShow)
-
-	app.Start(":5173")
-	fmt.Println("Hello, World!")
+	app.GET("/login", userHandler.HandleUserLoginShow)
+	app.POST("/login", userHandler.HandleUserLoginPost)
+	app.Logger.Fatal(app.Start(":5173"))
 }
 
 
