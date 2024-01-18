@@ -1,6 +1,5 @@
 package model
 
-
 type LoginRequest struct {
 	AccountNumber int64  `json:"account_number"`
 	Password      string `json:"password"`

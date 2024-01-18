@@ -23,7 +23,6 @@ type DB interface {
 	SubtractBalanceTx(*sql.Tx, int, int) error
 }
 
-
 type PostgresDB struct {
 	DB *sql.DB
 }
@@ -42,11 +41,11 @@ func NewPostgresDB() (*PostgresDB, error) {
 		log.Fatalf("Error pinging database: %v", err)
 	}
 
-	return &PostgresDB{db: db}, nil
+	return &PostgresDB{DB: db}, nil
 }
 
 func (db *PostgresDB) CreateUserTable() error {
-	_, err := db.db.Exec(`CREATE TABLE IF NOT EXISTS users (
+	_, err := db.DB.Exec(`CREATE TABLE IF NOT EXISTS users (
 		id SERIAL PRIMARY KEY,
 		email VARCHAR(255) NOT NULL,
 		first_name VARCHAR(255) NOT NULL,
@@ -64,10 +63,13 @@ func (db *PostgresDB) CreateUserTable() error {
 }
 
 func (db *PostgresDB) CreateUser(u *User) (*User, error) {
-	_, err := db.DB.Exec(`INSERT INTO users (email, first_name, last_name, encrypted_password, is_admin, is_archived, created_at, updated_at)
-	VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`, u.Email, u.FirstName, u.LastName, u.EncryptedPassword, u.IsAdmin, u.IsArchived, u.CreatedAt, u.UpdatedAt)
-	row := db.db.QueryRow(`SELECT id, email, first_name, last_name, encrypted_password, is_admin, is_archived, created_at, updated_at FROM users WHERE email = $1;`, u.Email)
-	err = row.Scan(&u.ID, &u.Email, &u.FirstName, &u.LastName, &u.EncryptedPassword, &u.IsAdmin, &u.IsArchived, &u.CreatedAt, &u.UpdatedAt)
+	query := `INSERT INTO users (email, first_name, last_name, encrypted_password, is_admin, is_archived, created_at, updated_at)
+	VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`
+	row := db.DB.QueryRow(
+		query,
+		u.Email, u.FirstName, u.LastName, u.EncryptedPassword, u.IsAdmin, u.IsArchived, u.CreatedAt, u.UpdatedAt)
+
+	err := row.Scan(&u.ID)
 	if err != nil {
 		return nil, fmt.Errorf("error scanning user: %v", err)
 	}
@@ -116,4 +118,3 @@ func (db *PostgresDB) GetUserByID(id int) (*User, error) {
 
 	return user, nil
 }
-
