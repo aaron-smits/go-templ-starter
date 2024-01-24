@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/aaron-smits/templ-starter/handlers"
+	// "github.com/aaron-smits/templ-starter/model"
 	// "github.com/aaron-smits/templ-starter/db"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -34,25 +35,28 @@ func main() {
 	// }
 	// app.Logger.Fatal(db.CreateUserTable())
 
+	// app.Use(withUser)
+
+	// Handlers
 	userHandler := handlers.UserHandler{}
 	homeHandler := handlers.HomeHandler{}
-	// todoHandler := handlers.TodoHandler{}
+	todoHandler := handlers.TodoHandler{}
 	// Groups
 	auth := app.Group("/api/auth")
-	// todo := app.Group("/api/todo")
+	todo := app.Group("/api/todo")
+
 	// Routes
 
-	// app.Use(withUser)
 	app.GET("/", homeHandler.HandleHomeShow)
 
 	auth.POST("/login/github", userHandler.HandleUserLoginPost)
 	auth.GET("/login/callback", userHandler.HandleUserLoginCallback)
 	auth.POST("/logout", userHandler.HandleUserLogoutPost)
 
-	// todo.GET("/", todoHandler.HandleTodoGet)
-	// todo.POST("/", todoHandler.HandleTodoPost)
-	// todo.PUT("/:id", todoHandler.HandleTodoPut)
-	// todo.DELETE("/:id", todoHandler.HandleTodoDelete)
+	todo.GET("/all", todoHandler.HandleTodosGet)
+	todo.POST("/", todoHandler.HandleTodoPost)
+	todo.PUT("/:id", todoHandler.HandleTodoPut)
+	todo.DELETE("/:id", todoHandler.HandleTodoDelete)
 
 	app.Logger.Fatal(app.Start(":5173"))
 }
