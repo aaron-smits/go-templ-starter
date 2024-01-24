@@ -16,7 +16,7 @@ func main() {
 	// Middleware
 	app.Use(middleware.Logger())
 	app.Use(middleware.Recover())
-	app.Use(withUser)
+	// app.Use(withUser)
 	// Load .env file
 	err := godotenv.Load()
 	if err != nil {
