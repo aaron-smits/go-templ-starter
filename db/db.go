@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	_ "github.com/lib/pq"
 	"github.com/aaron-smits/templ-starter/model"
+	_ "github.com/lib/pq"
 	supa "github.com/nedpals/supabase-go"
 )
 
