@@ -1,28 +1,28 @@
 package userview
 
 import (
-    "github.com/aaron-smits/templ-starter/view/layout"
-    "github.com/aaron-smits/templ-starter/view/component"
-    "github.com/aaron-smits/templ-starter/model"
+	"github.com/aaron-smits/templ-starter/view/layout"
+	"github.com/aaron-smits/templ-starter/view/component"
+	"github.com/aaron-smits/templ-starter/model"
 
 	"strconv"
 )
 
 func getAuthedUser(c context.Context) string {
-    user, ok := c.Value("user").(string)
-    if !ok {
-        return ""
-    }
-    return user
+	user, ok := c.Value("user").(string)
+	if !ok {
+		return ""
+	}
+	return user
 
 }
 
-templ Show(user model.User){
-    <h1>
-        {getAuthedUser(ctx)}
-    </h1>
-    @layout.Base(){
-        <h1>Hello, User {strconv.Itoa(user.ID)}. Your email is {user.Email}</h1>
-        @components.Card("email", "email")
-    }
+templ Show(user model.User) {
+	<h1>
+		{ getAuthedUser(ctx) }
+	</h1>
+	@layout.Base() {
+		<h1>Hello, User { strconv.Itoa(user.ID) }. Your email is { user.Email }</h1>
+		@components.Card("email", "email")
+	}
 }
