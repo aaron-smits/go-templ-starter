@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/aaron-smits/templ-starter/handler"
+	"github.com/aaron-smits/templ-starter/handlers"
 	// "github.com/aaron-smits/templ-starter/db"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
@@ -19,7 +19,11 @@ func main() {
 	if err != nil {
 		app.Logger.Fatal(err)
 	}
-
+	app.Pre(middleware.RemoveTrailingSlash())
+	// app.Pre(middleware.HTTPSRedirect())
+	// app.Pre(middleware.HTTPSNonWWWRedirect())
+	// app.Pre(middleware.NonWWWRedirect())
+	// app.Use(middleware.Secure())
 	// DB
 	// db, err := db.NewPostgresDB()
 	// if err != nil {
@@ -27,14 +31,26 @@ func main() {
 	// }
 	// app.Logger.Fatal(db.CreateUserTable())
 
-	userHandler := handler.UserHandler{}
-	homeHandler := handler.HomeHandler{}
+	userHandler := handlers.UserHandler{}
+	homeHandler := handlers.HomeHandler{}
+	todoHandler := handlers.TodoHandler{}
+	// Groups
+	auth := app.Group("/api/auth")
+	todo := app.Group("/api/todo")
 	// Routes
+
 	// app.Use(withUser)
 	app.GET("/", homeHandler.HandleHomeShow)
-	app.POST("/login", userHandler.HandleUserLoginPost)
-	app.GET("/login/callback", userHandler.HandleUserLoginCallback)
-	app.POST("/logout", userHandler.HandleUserLogoutPost)
+
+	auth.POST("/api/auth/login/github", userHandler.HandleUserLoginPost)
+	auth.GET("/api/auth/login/callback", userHandler.HandleUserLoginCallback)
+	auth.POST("/api/auth/logout", userHandler.HandleUserLogoutPost)
+
+	todo.GET("/api/todo", todoHandler.HandleTodoGet)
+	todo.POST("/api/todo", todoHandler.HandleTodoPost)
+	todo.PUT("/api/todo/:id", todoHandler.HandleTodoPut)
+	todo.DELETE("/api/todo/:id", todoHandler.HandleTodoDelete)
+
 	app.Logger.Fatal(app.Start(":5173"))
 }
 
