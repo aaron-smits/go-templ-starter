@@ -25,7 +25,6 @@ func deleteCookie(c echo.Context, name string) {
 	})
 }
 
-
 // Use this to set a cookie with a secure flag, http only, and a domain
 func setCookie(c echo.Context, name string, value string) {
 	c.SetCookie(&http.Cookie{
