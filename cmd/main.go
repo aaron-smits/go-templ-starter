@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"github.com/aaron-smits/templ-starter/handler"
 	// "github.com/aaron-smits/templ-starter/db"
 	"github.com/joho/godotenv"
@@ -31,7 +30,7 @@ func main() {
 	userHandler := handler.UserHandler{}
 	homeHandler := handler.HomeHandler{}
 	// Routes
-	app.Use(withUser)
+	// app.Use(withUser)
 	app.GET("/", homeHandler.HandleHomeShow)
 	app.POST("/login", userHandler.HandleUserLoginPost)
 	app.GET("/login/callback", userHandler.HandleUserLoginCallback)
@@ -39,10 +38,10 @@ func main() {
 	app.Logger.Fatal(app.Start(":5173"))
 }
 
-func withUser(next echo.HandlerFunc) echo.HandlerFunc {
-	return func(c echo.Context) error {
-		ctx := context.WithValue(c.Request().Context(), "user", 1)
-		c.SetRequest(c.Request().WithContext(ctx))
-		return next(c)
-	}
-}
+// func withUser(next echo.HandlerFunc) echo.HandlerFunc {
+// 	return func(c echo.Context) error {
+// 		ctx := context.WithValue(c.Request().Context(), "user", 1)
+// 		c.SetRequest(c.Request().WithContext(ctx))
+// 		return next(c)
+// 	}
+// }
