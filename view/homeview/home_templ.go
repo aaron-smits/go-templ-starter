@@ -63,7 +63,7 @@ func Home(email string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><form action=\"/auth/login/github\" method=\"POST\"><button type=\"submit\" value=\"github\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><form action=\"/api/auth/login/github\" method=\"POST\"><button type=\"submit\" value=\"github\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -95,7 +95,7 @@ func Home(email string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><form action=\"/auth/logout\" method=\"POST\"><button type=\"submit\" value=\"logout\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><form action=\"/api/auth/logout\" method=\"POST\"><button type=\"submit\" value=\"logout\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

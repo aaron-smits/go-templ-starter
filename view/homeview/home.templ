@@ -21,7 +21,7 @@ templ Home(email string) {
 				<p>
 					Welcome, Guest
 				</p>
-				<form action="/auth/login/github" method="POST">
+				<form action="/api/auth/login/github" method="POST">
 					<button type="submit" value="github">
 						Login with Github
 					</button>
@@ -30,7 +30,7 @@ templ Home(email string) {
 				<p>
 					Welcome, { email }
 				</p>
-				<form action="/auth/logout" method="POST">
+				<form action="/api/auth/logout" method="POST">
 					<button type="submit" value="logout">
 						Logout
 					</button>
