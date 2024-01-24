@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/labstack/echo/v4"
 
@@ -29,14 +28,7 @@ func (h UserHandler) HandleUserLoginPost(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-
-	c.SetCookie(&http.Cookie{
-		Name:     "code_verifier",
-		Value:    ProviderSignInDetails.CodeVerifier,
-		HttpOnly: true,
-		Domain:   "localhost",
-		Path:     "/",
-	})
+	setCookie(c, "code_verifier", ProviderSignInDetails.CodeVerifier)
 	return c.Redirect(http.StatusFound, ProviderSignInDetails.URL)
 }
 
@@ -61,40 +53,10 @@ func (h UserHandler) HandleUserLoginCallback(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	c.SetCookie(&http.Cookie{
-		Name:    "code_verifier",
-		Value:   "",
-		Expires: time.Unix(0, 0),
-		Secure: true,
-		HttpOnly: true,
-		SameSite: http.SameSiteStrictMode,
-	})
-	c.SetCookie(&http.Cookie{
-		Name:     "access_token",
-		Value:    ExchangeCodeDetails.AccessToken,
-		Domain:   "localhost",
-		Secure: true,
-		HttpOnly: true,
-		SameSite: http.SameSiteStrictMode,
-	})
-	c.SetCookie(&http.Cookie{
-		Name:   "refresh_token",
-		Value:  ExchangeCodeDetails.RefreshToken,
-		Domain: "localhost",
-		Secure: true,
-		HttpOnly: true,
-		SameSite: http.SameSiteStrictMode,
-
-	})
-	c.SetCookie(&http.Cookie{
-		Name: "user_id",
-		Value: ExchangeCodeDetails.User.ID,
-		Domain: "localhost",
-		Secure: true,
-		HttpOnly: true,
-		SameSite: http.SameSiteStrictMode,
-	})
-
+	deleteCookie(c, "code_verifier")
+	setCookie(c, "access_token", ExchangeCodeDetails.AccessToken)
+	setCookie(c, "refresh_token", ExchangeCodeDetails.RefreshToken)
+	setCookie(c, "user_id", ExchangeCodeDetails.User.ID)
 	return c.Redirect(http.StatusFound, "/")
 }
 
@@ -110,22 +72,7 @@ func (h UserHandler) HandleUserLogoutPost(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	c.SetCookie(&http.Cookie{
-		Name:    "access_token",
-		Value:   "",
-		Expires: time.Unix(0, 0),
-		Secure: true,
-		HttpOnly: true,
-		SameSite: http.SameSiteStrictMode,
-	})
-	c.SetCookie(&http.Cookie{
-		Name:    "refresh_token",
-		Value:   "",
-		Expires: time.Unix(0, 0),
-		Secure: true,
-		HttpOnly: true,
-		SameSite: http.SameSiteStrictMode,
-	})
+	deleteCookie(c, "access_token")
 
 	return c.Redirect(http.StatusFound, "/")
 }
