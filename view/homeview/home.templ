@@ -2,8 +2,15 @@ package homeview
 
 import (
 	"github.com/aaron-smits/templ-starter/view/layout"
+	"github.com/aaron-smits/templ-starter/view/components"
+	"github.com/aaron-smits/templ-starter/model"
 )
 
+var todoItem = model.Todo{
+	Title: "This is a todo",
+}
+
+// todo: pass in a struct with the user info and the todos
 templ Home(email string) {
 	@layout.Base() {
 		<h1>
@@ -14,7 +21,7 @@ templ Home(email string) {
 				<p>
 					Welcome, Guest
 				</p>
-				<form action="/login" method="POST">
+				<form action="/auth/login/github" method="POST">
 					<button type="submit" value="github">
 						Login with Github
 					</button>
@@ -23,11 +30,12 @@ templ Home(email string) {
 				<p>
 					Welcome, { email }
 				</p>
-				<form action="/logout" method="POST">
+				<form action="/auth/logout" method="POST">
 					<button type="submit" value="logout">
 						Logout
 					</button>
 				</form>
+				@components.Todo(todoItem)
 			}
 		</div>
 	}

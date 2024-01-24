@@ -11,9 +11,16 @@ import "io"
 import "bytes"
 
 import (
+	"github.com/aaron-smits/templ-starter/model"
+	"github.com/aaron-smits/templ-starter/view/components"
 	"github.com/aaron-smits/templ-starter/view/layout"
 )
 
+var todoItem = model.Todo{
+	Title: "This is a todo",
+}
+
+// todo: pass in a struct with the user info and the todos
 func Home(email string) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
@@ -56,7 +63,7 @@ func Home(email string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><form action=\"/login\" method=\"POST\"><button type=\"submit\" value=\"github\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><form action=\"/auth/login/github\" method=\"POST\"><button type=\"submit\" value=\"github\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -82,13 +89,13 @@ func Home(email string) templ.Component {
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(email)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/homeview/home.templ`, Line: 23, Col: 21}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/homeview/home.templ`, Line: 30, Col: 21}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><form action=\"/logout\" method=\"POST\"><button type=\"submit\" value=\"logout\">")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><form action=\"/auth/logout\" method=\"POST\"><button type=\"submit\" value=\"logout\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -98,6 +105,10 @@ func Home(email string) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button></form>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = components.Todo(todoItem).Render(ctx, templ_7745c5c3_Buffer)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

@@ -1,4 +1,4 @@
-package handler
+package handlers
 
 import (
 	"fmt"
@@ -21,7 +21,7 @@ func (h UserHandler) HandleUserLoginPost(c echo.Context) error {
 	ProviderSignInOptions := supa.ProviderSignInOptions{
 		Provider:   "github",
 		FlowType:   "pkce",
-		RedirectTo: "http://localhost:5173/login/callback",
+		RedirectTo: "http://localhost:5173/auth/login/callback",
 	}
 
 	ProviderSignInDetails, err := supabase.Auth.SignInWithProvider(ProviderSignInOptions)

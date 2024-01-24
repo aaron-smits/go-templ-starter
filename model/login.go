@@ -1,5 +1,9 @@
 package model
 
+// these do not currently have any use in the project,
+// but we can adapt them to our needs later
+// These would be good to have for type safety across the project
+
 type LoginRequest struct {
 	AccountNumber int64  `json:"account_number"`
 	Password      string `json:"password"`
