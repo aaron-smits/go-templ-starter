@@ -23,12 +23,18 @@ func (h TodoHandler) HandleTodosGet(c echo.Context) error {
 }
 
 func (h TodoHandler) HandleTodoPost(c echo.Context) error {
-	todo := new(model.Todo)
-	err := c.Bind(todo)
-	if err != nil {
-		return err
+	title := c.FormValue("title")
+	body := c.FormValue("body")
+	todo := model.Todo{
+		ID:     "1",
+		UserID: 1,
+		Title:  title,
+		Body:   body,
+		Done:   false,
 	}
-	db.TodoList = append(db.TodoList, *todo)
+
+	// append the new todo to the list
+	db.TodoList = append(db.TodoList, todo)
 	return c.Redirect(302, "/")
 }
 

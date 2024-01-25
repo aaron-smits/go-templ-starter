@@ -62,7 +62,7 @@ func Todo(todo model.Todo) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label> <input type=\"checkbox\" name=\"done\" hx-post=\"/api/todo/{todo.ID}/complete\"> <button hx-delete=\"/api/todo/{todo.ID}\" hx-trigger=\"click\" hx-confirm=\"Delete this todo?\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label> <input type=\"checkbox\" name=\"done\" hx-post=\"/api/todo/{todo.ID}/done\"> <button hx-delete=\"/api/todo/{todo.ID}\" hx-trigger=\"click\" hx-confirm=\"Delete this todo?\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

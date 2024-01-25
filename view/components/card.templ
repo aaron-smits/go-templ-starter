@@ -4,13 +4,13 @@ import (
 	"github.com/aaron-smits/templ-starter/model"
 )
 
-templ Todo(todo *model.Todo) {
+templ Todo(todo model.Todo) {
 	<div class="todo">
 		<h3>{ todo.Title }</h3>
 		<p>{ todo.Body } </p>
 		<div>
 			<label>Done?</label>
-			<input type="checkbox" name="done" hx-post="/api/todo/{todo.ID}/complete"/>
+			<input type="checkbox" name="done" hx-post="/api/todo/{todo.ID}/done"/>
 			<button
 				hx-delete="/api/todo/{todo.ID}"
 				hx-trigger="click"

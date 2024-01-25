@@ -3,45 +3,51 @@ package homeview
 import (
 	"github.com/aaron-smits/templ-starter/view/layout"
 	"github.com/aaron-smits/templ-starter/view/components"
-	"github.com/aaron-smits/templ-starter/db"
+	"github.com/aaron-smits/templ-starter/model"
+
+	supa "github.com/nedpals/supabase-go"
 )
 
 // todo: pass in a struct with the user info and the todos
-templ Home(email string) {
+templ Home(user *supa.User, todos []model.Todo) {
+	@layout.Base() {
+		<div>
+			<p>
+				Welcome, { user.Email }
+			</p>
+			<form action="/api/auth/logout" method="POST">
+				<button type="submit" value="logout">
+					Logout
+				</button>
+			</form>
+			<form action="/api/todo/" method="POST">
+				<input type="text" name="title" placeholder="Title"/>
+				<input type="text" name="body" placeholder="Body"/>
+				<button type="submit" value="add">
+					Add Todo
+				</button>
+			</form>
+			for i := range(todos) {
+				@components.Todo(todos[i])
+			}
+		</div>
+	}
+}
+
+templ LoggedOutHome () {
 	@layout.Base() {
 		<h1>
 			This is the home page 
 		</h1>
 		<div>
-			if email == "" {
-				<p>
-					Welcome, Guest
-				</p>
-				<form action="/api/auth/login/github" method="POST">
-					<button type="submit" value="github">
-						Login with Github
-					</button>
-				</form>
-			} else {
-				<p>
-					Welcome, { email }
-				</p>
-				<form action="/api/auth/logout" method="POST">
-					<button type="submit" value="logout">
-						Logout
-					</button>
-				</form>
-				<form action="/api/todo/" method="POST">
-					<input type="text" name="title" placeholder="Title"/>
-					<input type="text" name="body" placeholder="Body"/>
-					<button type="submit" value="add">
-						Add Todo
-					</button>
-				</form>
-				for i := range(db.TodoList) {
-					@components.Todo(db.TodoList[i])
-				}
-			}
+			<p>
+				Welcome, Guest
+			</p>
+			<form action="/api/auth/login/github" method="POST">
+				<button type="submit" value="github">
+					Login with Github
+				</button>
+			</form>
 		</div>
 	}
 }
