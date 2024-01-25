@@ -4,8 +4,6 @@ import (
 	"os"
 
 	"github.com/aaron-smits/templ-starter/handlers"
-	// "github.com/aaron-smits/templ-starter/model"
-	// "github.com/aaron-smits/templ-starter/db"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -17,7 +15,6 @@ func main() {
 	// Middleware
 	app.Use(middleware.Logger())
 	app.Use(middleware.Recover())
-	// app.Use(withUser)
 	// Load .env file
 	err := godotenv.Load()
 	if err != nil {
