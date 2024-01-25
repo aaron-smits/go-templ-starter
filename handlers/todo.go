@@ -1,14 +1,13 @@
 package handlers
 
 import (
+	"github.com/aaron-smits/templ-starter/db"
 	"github.com/aaron-smits/templ-starter/model"
 	"github.com/labstack/echo/v4"
 )
 
 type TodoHandler struct {
 }
-
-var TodoList []*model.Todo = []*model.Todo{}
 
 func (h TodoHandler) HandleTodosGet(c echo.Context) error {
 	todo := model.Todo{
@@ -18,9 +17,9 @@ func (h TodoHandler) HandleTodosGet(c echo.Context) error {
 		Body:   "Test",
 		Done:   false,
 	}
-	TodoList = append(TodoList, &todo)
+	db.TodoList = append(db.TodoList, todo)
 
-	return c.JSON(200, TodoList)
+	return c.JSON(200, db.TodoList)
 }
 
 func (h TodoHandler) HandleTodoPost(c echo.Context) error {
@@ -29,8 +28,8 @@ func (h TodoHandler) HandleTodoPost(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	TodoList = append(TodoList, todo)
-	return c.JSON(200, TodoList)
+	db.TodoList = append(db.TodoList, *todo)
+	return c.Redirect(302, "/")
 }
 
 func (h TodoHandler) HandleTodoPut(c echo.Context) error {
@@ -40,21 +39,21 @@ func (h TodoHandler) HandleTodoPut(c echo.Context) error {
 		return err
 	}
 	// Find the todo in the list with the matching ID
-	for i, t := range TodoList {
+	for i, t := range db.TodoList {
 		if t.ID == todo.ID {
-			TodoList[i] = todo
+			db.TodoList[i] = *todo
 		}
 	}
-	return c.JSON(200, TodoList)
+	return c.JSON(200, db.TodoList)
 }
 
 func (h TodoHandler) HandleTodoDelete(c echo.Context) error {
 	// Iterate through the list and remove the todo with the matching ID
-	for i, t := range TodoList {
+	for i, t := range db.TodoList {
 		if t.ID == c.Param("id") {
-			TodoList = append(TodoList[:i], TodoList[i+1:]...)
+			db.TodoList = append(db.TodoList[:i], db.TodoList[i+1:]...)
 		}
 	}
 
-	return c.JSON(200, TodoList)
+	return c.JSON(200, db.TodoList)
 }

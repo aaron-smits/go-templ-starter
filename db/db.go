@@ -11,6 +11,8 @@ import (
 	supa "github.com/nedpals/supabase-go"
 )
 
+var TodoList []model.Todo
+
 // DB is a wrapper around the database connection.
 type DB interface {
 	CreateUser(*model.User) (*model.User, error)

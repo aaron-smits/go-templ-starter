@@ -3,12 +3,8 @@ package homeview
 import (
 	"github.com/aaron-smits/templ-starter/view/layout"
 	"github.com/aaron-smits/templ-starter/view/components"
-	"github.com/aaron-smits/templ-starter/model"
+	"github.com/aaron-smits/templ-starter/db"
 )
-
-var todoItem = model.Todo{
-	Title: "This is a todo",
-}
 
 // todo: pass in a struct with the user info and the todos
 templ Home(email string) {
@@ -35,7 +31,16 @@ templ Home(email string) {
 						Logout
 					</button>
 				</form>
-				@components.Todo(todoItem)
+				<form action="/api/todo/" method="POST">
+					<input type="text" name="title" placeholder="Title"/>
+					<input type="text" name="body" placeholder="Body"/>
+					<button type="submit" value="add">
+						Add Todo
+					</button>
+				</form>
+				for i := range(db.TodoList) {
+					@components.Todo(db.TodoList[i])
+				}
 			}
 		</div>
 	}

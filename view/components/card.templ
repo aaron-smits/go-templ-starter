@@ -4,7 +4,7 @@ import (
 	"github.com/aaron-smits/templ-starter/model"
 )
 
-templ Todo(todo model.Todo) {
+templ Todo(todo *model.Todo) {
 	<div class="todo">
 		<h3>{ todo.Title }</h3>
 		<p>{ todo.Body } </p>

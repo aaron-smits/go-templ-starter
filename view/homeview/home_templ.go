@@ -11,14 +11,10 @@ import "io"
 import "bytes"
 
 import (
-	"github.com/aaron-smits/templ-starter/model"
+	"github.com/aaron-smits/templ-starter/db"
 	"github.com/aaron-smits/templ-starter/view/components"
 	"github.com/aaron-smits/templ-starter/view/layout"
 )
-
-var todoItem = model.Todo{
-	Title: "This is a todo",
-}
 
 // todo: pass in a struct with the user info and the todos
 func Home(email string) templ.Component {
@@ -89,7 +85,7 @@ func Home(email string) templ.Component {
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(email)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/homeview/home.templ`, Line: 30, Col: 21}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/homeview/home.templ`, Line: 26, Col: 21}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -104,13 +100,24 @@ func Home(email string) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button></form><form action=\"/api/todo/\" method=\"POST\"><input type=\"text\" name=\"title\" placeholder=\"Title\"> <input type=\"text\" name=\"body\" placeholder=\"Body\"> <button type=\"submit\" value=\"add\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Var9 := `Add Todo`
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var9)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button></form>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = components.Todo(todoItem).Render(ctx, templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
+				for i := range db.TodoList {
+					templ_7745c5c3_Err = components.Todo(db.TodoList[i]).Render(ctx, templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
 				}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
