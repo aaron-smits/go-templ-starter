@@ -56,7 +56,7 @@ func main() {
 	todo.GET("/all", todoHandler.HandleTodosGet)
 	todo.POST("/", todoHandler.HandleTodoPost)
 	todo.PUT("/:id", todoHandler.HandleTodoPut)
-	todo.DELETE("/:id", todoHandler.HandleTodoDelete)
+	// todo.DELETE("/:id", todoHandler.HandleTodoDelete)
 
 	app.Logger.Fatal(app.Start(":5173"))
 }
