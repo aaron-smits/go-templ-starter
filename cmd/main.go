@@ -23,19 +23,6 @@ func main() {
 	if err != nil {
 		app.Logger.Fatal(err)
 	}
-	// app.Pre(middleware.RemoveTrailingSlash())
-	// app.Pre(middleware.HTTPSRedirect())
-	// app.Pre(middleware.HTTPSNonWWWRedirect())
-	// app.Pre(middleware.NonWWWRedirect())
-	// app.Use(middleware.Secure())
-	// DB
-	// db, err := db.NewPostgresDB()
-	// if err != nil {
-	// 	app.Logger.Fatal(err)
-	// }
-	// app.Logger.Fatal(db.CreateUserTable())
-
-	// app.Use(withUser)
 
 	// Handlers
 	userHandler := handlers.UserHandler{}
@@ -51,33 +38,59 @@ func main() {
 
 	auth.POST("/login/github", userHandler.HandleUserLoginPost)
 	auth.GET("/login/callback", userHandler.HandleUserLoginCallback)
-	auth.POST("/logout", userHandler.HandleUserLogoutPost)
+	auth.POST("/logout", withAuth(userHandler.HandleUserLogoutPost))
 
-	todo.GET("/all", todoHandler.HandleTodosGet)
-	todo.POST("/", todoHandler.HandleTodoPost)
-	todo.PUT("/:id", todoHandler.HandleTodoPut)
+	todo.GET("/all", withAuth(todoHandler.HandleTodosGet))
+	todo.POST("/", withAuth(todoHandler.HandleTodoPost))
+	todo.PUT("/:id", withAuth(todoHandler.HandleTodoPut))
 	// todo.DELETE("/:id", todoHandler.HandleTodoDelete)
 
 	app.Logger.Fatal(app.Start(":5173"))
 }
 
-func withUser(next echo.HandlerFunc) echo.HandlerFunc {
+// func withUser(next echo.HandlerFunc) echo.HandlerFunc {
+// 	return func(c echo.Context) error {
+// 		supabaseURL := os.Getenv("SUPABASE_URL")
+// 		supabaseKey := os.Getenv("SUPABASE_KEY")
+// 		supabase := supa.CreateClient(supabaseURL, supabaseKey)
+// 		accessToken, err := c.Cookie("access_token")
+// 		if err != nil {
+// 			return err
+// 		}
+// 		if accessToken == nil {
+// 			return err
+// 		}
+// 		user, err := supabase.Auth.User(c.Request().Context(), accessToken.Value)
+// 		if err != nil {
+// 			return err
+// 		}
+// 		c.Set("user", user)
+// 		return next(c)
+// 	}
+// }
+
+func withAuth(handlerFunc echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		supabaseURL := os.Getenv("SUPABASE_URL")
-		supabaseKey := os.Getenv("SUPABASE_KEY")
-		supabase := supa.CreateClient(supabaseURL, supabaseKey)
-		accessToken, err := c.Cookie("access_token")
+		authCookie, err := c.Cookie("access_token")
+		homeHandler := handlers.HomeHandler{}
+
 		if err != nil {
-			return nil
+			return c.String(500, "user is not set")
 		}
-		if accessToken == nil {
-			return nil
+		if authCookie == nil {
+			return homeHandler.HandleHomeShow(c)
 		}
-		user, err := supabase.Auth.User(c.Request().Context(), accessToken.Value)
+		supaURL := os.Getenv("SUPABASE_URL")
+		supaKey := os.Getenv("SUPABASE_KEY")
+		supa := supa.CreateClient(supaURL, supaKey)
+
+		user, err := supa.Auth.User(c.Request().Context(), authCookie.Value)
 		if err != nil {
-			return nil
+			return c.String(401, "Unauthorized")
 		}
-		c.Set("user", user)
-		return next(c)
+		if user == nil {
+			return homeHandler.HandleHomeShow(c)
+		}
+		return handlerFunc(c)
 	}
 }
