@@ -21,19 +21,21 @@ func makeTargetSelector(id int) string {
 
 templ Todo(todo model.Todo) {
 	<div class="todo" id={ makeId(todo.ID) }>
-		<h3>{ todo.Title }</h3>
-		<p>{ todo.Body } </p>
-		<div>
-			<button
-				hx-delete={ makeIdRoute(todo.ID) }
-				hx-trigger="click"
-				hx-confirm="Delete this todo?"
-				hx-target={ makeTargetSelector(todo.ID) }
-				hx-swap="innerHTML"
-				hx-replace-url="false"
-			>
-				Delete
-			</button>
+		<div class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+			<h3 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{ todo.Title }</h3>
+			<p class="font-normal text-gray-700 dark:text-gray-400">{ todo.Body } </p>
+			<div>
+				<button
+					hx-delete={ makeIdRoute(todo.ID) }
+					hx-trigger="click"
+					hx-confirm="Delete this todo?"
+					hx-target={ makeTargetSelector(todo.ID) }
+					hx-swap="innerHTML"
+					hx-replace-url="false"
+				>
+					Delete
+				</button>
+			</div>
 		</div>
 	</div>
 }

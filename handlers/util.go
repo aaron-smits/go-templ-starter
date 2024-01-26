@@ -7,7 +7,7 @@ import (
 
 	"github.com/a-h/templ"
 	"github.com/aaron-smits/templ-starter/model"
-	"github.com/aaron-smits/templ-starter/view/homeview"
+	"github.com/aaron-smits/templ-starter/view/pages"
 	"github.com/labstack/echo/v4"
 
 	supa "github.com/nedpals/supabase-go"
@@ -25,15 +25,15 @@ func WithAuth(next echo.HandlerFunc) echo.HandlerFunc {
 
 		token, err := c.Cookie("access_token")
 		if err != nil || token == nil {
-			return Render(c, homeview.LoggedOutHome())
+			return Render(c, pages.LoggedOutHome())
 		}
 
 		user, err := supabase.Auth.User(c.Request().Context(), token.Value)
 		if err != nil {
-			return Render(c, homeview.LoggedOutHome())
+			return Render(c, pages.LoggedOutHome())
 		}
 		if user == nil {
-			return Render(c, homeview.LoggedOutHome())
+			return Render(c, pages.LoggedOutHome())
 		}
 		modelUser := &model.User{
 			User: user,

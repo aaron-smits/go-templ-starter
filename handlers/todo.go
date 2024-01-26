@@ -6,7 +6,7 @@ import (
 	"github.com/aaron-smits/templ-starter/db"
 	"github.com/aaron-smits/templ-starter/model"
 	"github.com/aaron-smits/templ-starter/view/components"
-	"github.com/aaron-smits/templ-starter/view/homeview"
+	"github.com/aaron-smits/templ-starter/view/pages"
 	"github.com/labstack/echo/v4"
 )
 
@@ -18,7 +18,7 @@ func (h TodoHandler) HandleTodoPost(c echo.Context) error {
 	userId := user.User.ID
 	title := c.FormValue("title")
 	if title == "" {
-		return Render(c, homeview.Home(user, db.TodoList))
+		return Render(c, pages.Home(user, db.TodoList))
 	}
 	body := c.FormValue("body")
 	id := len(db.TodoList) + 1
