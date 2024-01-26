@@ -18,16 +18,19 @@ templ Home(user *model.User, todos []model.Todo) {
 					Logout
 				</button>
 			</form>
-			<form action="/api/todo/" method="POST">
+			<form
+				hx-post="/api/todo/"
+				hx-replace-url="false"
+				hx-swap="innerHTML"
+				hx-target="#todo-list"
+			>
 				<input type="text" name="title" placeholder="Title"/>
 				<input type="text" name="body" placeholder="Body"/>
 				<button type="submit" value="add">
 					Add Todo
 				</button>
 			</form>
-			for i := range(todos) {
-				@components.Todo(todos[i])
-			}
+			@components.TodoList(todos)
 		</div>
 	}
 }

@@ -63,7 +63,7 @@ func Home(user *model.User, todos []model.Todo) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button></form><form action=\"/api/todo/\" method=\"POST\"><input type=\"text\" name=\"title\" placeholder=\"Title\"> <input type=\"text\" name=\"body\" placeholder=\"Body\"> <button type=\"submit\" value=\"add\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</button></form><form hx-post=\"/api/todo/\" hx-replace-url=\"false\" hx-swap=\"innerHTML\" hx-target=\"#todo-list\"><input type=\"text\" name=\"title\" placeholder=\"Title\"> <input type=\"text\" name=\"body\" placeholder=\"Body\"> <button type=\"submit\" value=\"add\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -76,11 +76,9 @@ func Home(user *model.User, todos []model.Todo) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			for i := range todos {
-				templ_7745c5c3_Err = components.Todo(todos[i]).Render(ctx, templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
+			templ_7745c5c3_Err = components.TodoList(todos).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div>")
 			if templ_7745c5c3_Err != nil {
