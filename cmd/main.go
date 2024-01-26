@@ -36,7 +36,7 @@ func main() {
 
 	todo.POST("/", handlers.WithAuth(todoHandler.HandleTodoPost))
 	todo.PUT("/:id", handlers.WithAuth(todoHandler.HandleTodoPut))
-	// todo.DELETE("/:id", todoHandler.HandleTodoDelete)
+	todo.DELETE("/:id", handlers.WithAuth(todoHandler.HandleTodoDelete))
 
 	app.Logger.Fatal(app.Start(":5173"))
 }
