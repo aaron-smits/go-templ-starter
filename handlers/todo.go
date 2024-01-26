@@ -1,35 +1,30 @@
 package handlers
 
 import (
-	"os"
-
 	"github.com/aaron-smits/templ-starter/db"
 	"github.com/aaron-smits/templ-starter/model"
 	"github.com/aaron-smits/templ-starter/view/homeview"
 	"github.com/labstack/echo/v4"
-
-	supa "github.com/nedpals/supabase-go"
 )
 
 type TodoHandler struct {
 }
 
-func (h TodoHandler) HandleTodosGet(c echo.Context) error {
-	return c.JSON(200, db.TodoList)
-}
-
 func (h TodoHandler) HandleTodoPost(c echo.Context) error {
-	userId, err := c.Cookie("user_id")
-	if err != nil {
-		return err
+	user := c.Get("user").(*model.User)
+	userId := user.User.ID
+	if userId == "" {
+		return Render(c, homeview.LoggedOutHome())
 	}
 	title := c.FormValue("title")
+	if title == "" {
+		return Render(c, homeview.Home(user, db.TodoList))
+	}
 	body := c.FormValue("body")
-	todoUserId := userId.Value
 	id := len(db.TodoList) + 1
 	todo := model.Todo{
 		ID:     id,
-		UserID: todoUserId,
+		UserID: userId,
 		Title:  title,
 		Body:   body,
 		Done:   false,
@@ -37,18 +32,7 @@ func (h TodoHandler) HandleTodoPost(c echo.Context) error {
 
 	// append the new todo to the list
 	db.TodoList = append(db.TodoList, todo)
-	supaURL := os.Getenv("SUPABASE_URL")
-	supaKey := os.Getenv("SUPABASE_KEY")
-	supa := supa.CreateClient(supaURL, supaKey)
-	token, err := c.Cookie("access_token")
-	if err != nil {
-		return err
-	}
-	user, err := supa.Auth.User(c.Request().Context(), token.Value)
-	if err != nil {
-		return err
-	}
-	return render(c, homeview.Home(user, db.TodoList))
+	return Render(c, homeview.Home(user, db.TodoList))
 }
 
 func (h TodoHandler) HandleTodoPut(c echo.Context) error {

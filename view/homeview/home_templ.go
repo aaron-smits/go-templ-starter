@@ -14,12 +14,10 @@ import (
 	"github.com/aaron-smits/templ-starter/model"
 	"github.com/aaron-smits/templ-starter/view/components"
 	"github.com/aaron-smits/templ-starter/view/layout"
-
-	supa "github.com/nedpals/supabase-go"
 )
 
 // todo: pass in a struct with the user info and the todos
-func Home(user *supa.User, todos []model.Todo) templ.Component {
+func Home(user *model.User, todos []model.Todo) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -50,7 +48,7 @@ func Home(user *supa.User, todos []model.Todo) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(user.Email)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/homeview/home.templ`, Line: 15, Col: 25}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `view/homeview/home.templ`, Line: 13, Col: 25}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {

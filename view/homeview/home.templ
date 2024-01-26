@@ -4,12 +4,10 @@ import (
 	"github.com/aaron-smits/templ-starter/view/layout"
 	"github.com/aaron-smits/templ-starter/view/components"
 	"github.com/aaron-smits/templ-starter/model"
-
-	supa "github.com/nedpals/supabase-go"
 )
 
 // todo: pass in a struct with the user info and the todos
-templ Home(user *supa.User, todos []model.Todo) {
+templ Home(user *model.User, todos []model.Todo) {
 	@layout.Base() {
 		<div>
 			<p>
