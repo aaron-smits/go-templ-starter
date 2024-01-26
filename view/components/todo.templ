@@ -1,0 +1,47 @@
+package components
+
+import (
+	"strconv"
+	"github.com/aaron-smits/templ-starter/model"
+)
+
+const route = "/api/todo"
+
+func makeIdRoute(id int) string {
+	return route + "/" + strconv.Itoa(id)
+}
+
+func makeId(id int) string {
+	return "todo" + strconv.Itoa(id)
+}
+
+func makeTargetSelector(id int) string {
+	return "#" + makeId(id)
+}
+
+templ Todo(todo model.Todo) {
+	<div class="todo" id={ makeId(todo.ID) }>
+		<h3>{ todo.Title }</h3>
+		<p>{ todo.Body } </p>
+		<div>
+			<button
+				hx-delete={ makeIdRoute(todo.ID) }
+				hx-trigger="click"
+				hx-confirm="Delete this todo?"
+				hx-target={ makeTargetSelector(todo.ID) }
+				hx-swap="innerHTML"
+				hx-replace-url="false"
+			>
+				Delete
+			</button>
+		</div>
+	</div>
+}
+
+templ TodoList(todos []model.Todo) {
+	<div class="todo-list" id="todo-list">
+		for _, todo := range todos {
+			@Todo(todo)
+		}
+	</div>
+}
