@@ -1,20 +1,34 @@
-# todo
+# go templ starter
 
-p0
+This is a demo project to show how to create a full stack web application using Go, Echo templ, HTMX, Supabase, Postgres and Tailwind CSS.
 
-- [] Set up the database on Supabase
-- [] Create database handlers in db package
+We use the following tools:
 
-p1
+| Category       | Technology                                                                 |
+| -------------- | -------------------------------------------------------------------------- |
+| Language       | [Go](https://golang.org/)                                                  |
+| Web Framework  | [Echo](https://echo.labstack.com/)                                        |
+| Templating     | [templ](https://github.com/a-h/templ)                                      |
+| JavaScript     | [HTMX](https://htmx.org/)                                                  |
+| CSS            | [Tailwind CSS](https://tailwindcss.com/)                                   |
+| Database       | [Supabase](https://supabase.com/), [PostgreSQL](https://www.postgresql.org/) |
+| Build Tools    | [Docker](https://www.docker.com/), [Make](https://www.gnu.org/software/make/), [GitHub Actions](https://docs.github.com/en/actions) |
 
-- [] Add a `seed` command to the Makefile
+## todo
 
-p2
+#### p0
 
-- [] Write e2e tests
-- [] Add a `test` command to the Makefile
+- [ ] Set up the database on Supabase
+- [ ] Create database handlers in db package
 
-p3
+#### p1
 
-- [] Add a README.md
-- [] Write unit tests
+- [ ] Add a `seed` command to the Makefile
+
+#### p2
+
+- [ ] Write e2e tests
+- [ ] Write unit tests
+- [ ] Add a `test` command to the Makefile
+
+#### p3
