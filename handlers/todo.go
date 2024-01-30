@@ -17,15 +17,8 @@ func (h TodoHandler) HandleTodoPost(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	if userIdCookie == nil {
-		return c.Redirect(302, "/")
-	}
 	userId := userIdCookie.Value
 	title := c.FormValue("title")
-	// todo: validate title is not empty, show error toast if it is
-	if title == "" {
-		title = "Untitled"
-	}
 	body := c.FormValue("body")
 	todo := model.Todo{
 		UserID: userId,
