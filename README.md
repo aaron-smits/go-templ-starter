@@ -14,6 +14,35 @@ We use the following tools:
 | Database/Auth  | [Supabase](https://supabase.com/), [PostgreSQL](https://www.postgresql.org/) |
 | Build Tools    | [Docker](https://www.docker.com/), [Make](https://www.gnu.org/software/make/), [GitHub Actions](https://docs.github.com/en/actions) |
 
+## Getting Started
+
+### Prerequisites
+
+- [Docker](https://www.docker.com/)
+- [Make](https://www.gnu.org/software/make/)
+- [Go](https://golang.org/)
+
+
+### Installation
+
+1. Clone the repo
+
+```sh
+   git clone https://github.com/aaron-smits/go-templ-starter.git
+```
+
+2. Set environment variables
+
+```sh
+   cp .env.dev.example .env
+```
+
+3. Start the database and the app with docker compose
+
+```sh
+   make docker
+```
+
 ## todo
 
 ### p0
