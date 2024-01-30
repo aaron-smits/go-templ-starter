@@ -14,6 +14,9 @@ jobs:
               uses: actions/setup-go@v5
               with:
                 go-version: '^1.21.6'
+            - name: Get templ
+              run: go install github.com/a-h/templ/cmd/templ@latest
+            - run: templ -v
             - name: Setup Flyctl
               uses: superfly/flyctl-actions/setup-flyctl@master
 
