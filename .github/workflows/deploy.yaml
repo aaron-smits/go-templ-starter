@@ -30,4 +30,4 @@ jobs:
               run: make prod
             - name: Set fly.io deploymentURL
               id: deploy
-              run: echo "url=https://$(fly status -a templ-starter --json | jq -r '.Hostname')" >> $GITHUB_OUTPUT
+              run: echo "url=https://$(flyctl status -a templ-starter --json | jq -r '.Hostname')" >> $GITHUB_OUTPUT
