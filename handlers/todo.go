@@ -12,8 +12,15 @@ type TodoHandler struct {
 }
 
 func (h TodoHandler) HandleTodoPost(c echo.Context) error {
-	user := c.Get("user").(*model.User)
-	userId := user.User.ID
+	// user := c.Get("user").(*model.User)
+	userIdCookie, err := c.Cookie("user_id")
+	if err != nil {
+		return err
+	}
+	if userIdCookie == nil {
+		return c.Redirect(302, "/")
+	}
+	userId := userIdCookie.Value
 	title := c.FormValue("title")
 	// todo: validate title is not empty, show error toast if it is
 	if title == "" {
@@ -28,8 +35,8 @@ func (h TodoHandler) HandleTodoPost(c echo.Context) error {
 	}
 
 	// append the new todo to the list
-	err := h.DB.AddTodo(todo)
-	if err != nil {
+	todoErr := h.DB.AddTodo(todo)
+	if todoErr != nil {
 		return err
 	}
 	todoList, err := h.DB.GetTodoList()

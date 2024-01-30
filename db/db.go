@@ -83,7 +83,7 @@ func (DB *PostgresDB) GetTodoList() ([]model.Todo, error) {
 }
 
 func (DB *PostgresDB) AddTodo(todo model.Todo) error {
-	_, err := DB.DB.Exec("INSERT INTO todos (title, body, done, user_id) VALUES ($1, $2, $3)", todo.Title, todo.Body, todo.Done, todo.UserID)
+	_, err := DB.DB.Exec("INSERT INTO todos (title, body, done, user_id) VALUES ($1, $2, $3, $4)", todo.Title, todo.Body, todo.Done, todo.UserID)
 	if err != nil {
 		return err
 	}
