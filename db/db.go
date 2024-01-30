@@ -58,7 +58,7 @@ func NewSupabaseDB() (*SupabaseDB, error) {
 }
 
 func (DB *PostgresDB) CreateTodoTable() error {
-	_, err := DB.DB.Exec("CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, title TEXT, body TEXT, done BOOLEAN, user_id TEXT)")
+	_, err := DB.DB.Query("CREATE TABLE IF NOT EXISTS todos (id SERIAL PRIMARY KEY, title TEXT, body TEXT, done BOOLEAN, user_id TEXT)")
 	if err != nil {
 		return err
 	}
@@ -86,7 +86,7 @@ func (DB *PostgresDB) GetTodoList() ([]model.Todo, error) {
 func (DB *PostgresDB) AddTodo(todo model.Todo) error {
 	fmt.Println("This is the todo: ", todo)
 	query := "INSERT INTO todos (title, body, done, user_id) VALUES ($1, $2, $3, $4)"
-	result, err := DB.DB.Exec(query, todo.Title, todo.Body, todo.Done, todo.UserID)
+	result, err := DB.DB.Query(query, todo.Title, todo.Body, todo.Done, todo.UserID)
 	fmt.Println("This is the result: ", result)
 	if err != nil {
 		return err
@@ -95,7 +95,7 @@ func (DB *PostgresDB) AddTodo(todo model.Todo) error {
 }
 
 func (DB *PostgresDB) DeleteTodo(id int) error {
-	_, err := DB.DB.Exec("DELETE FROM todos WHERE id = $1", id)
+	_, err := DB.DB.Query("DELETE FROM todos WHERE id = $1", id)
 	if err != nil {
 		return err
 	}
