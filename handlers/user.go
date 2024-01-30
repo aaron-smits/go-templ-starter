@@ -16,12 +16,17 @@ type UserHandler struct {
 func (h UserHandler) HandleUserLoginPost(c echo.Context) error {
 	supabaseURL := os.Getenv("SUPABASE_URL")
 	supabaseKey := os.Getenv("SUPABASE_KEY")
+	baseUrl := os.Getenv("BASE_URL")
+	port := os.Getenv("PORT")
+	if baseUrl == "http://localhost" {
+		baseUrl = fmt.Sprintf("%s:%s", baseUrl, port)
+	}
 	supabase := supa.CreateClient(supabaseURL, supabaseKey)
 
 	ProviderSignInOptions := supa.ProviderSignInOptions{
 		Provider:   "github",
 		FlowType:   "pkce",
-		RedirectTo: "http://localhost:5173/api/auth/login/callback",
+		RedirectTo: baseUrl + "/api/auth/login/callback",
 	}
 
 	ProviderSignInDetails, err := supabase.Auth.SignInWithProvider(ProviderSignInOptions)

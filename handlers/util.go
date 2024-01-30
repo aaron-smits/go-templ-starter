@@ -24,13 +24,16 @@ func WithAuth(next echo.HandlerFunc) echo.HandlerFunc {
 		supabase := supa.CreateClient(supabaseURL, supabaseKey)
 
 		token, err := c.Cookie("access_token")
-		if err != nil || token == nil {
+		if err != nil {
+			return Render(c, pages.LoggedOutHome())
+		}
+		if token == nil {
 			return Render(c, pages.LoggedOutHome())
 		}
 
 		user, err := supabase.Auth.User(c.Request().Context(), token.Value)
 		if err != nil {
-			return Render(c, pages.LoggedOutHome())
+			return err
 		}
 		if user == nil {
 			return Render(c, pages.LoggedOutHome())
@@ -50,22 +53,21 @@ func deleteCookie(c echo.Context, name string) {
 		Name:     name,
 		Value:    "",
 		Expires:  time.Unix(0, 0),
-		HttpOnly: true,
-		Domain:   "localhost",
-		Path:     "/",
 		Secure:   true,
+		SameSite: http.SameSiteLaxMode,
+		Domain:   os.Getenv("DOMAIN"),
+		Path:     "/",
 	})
 }
 
 // Use this to set a cookie with a secure flag, http only, and a domain
 func setCookie(c echo.Context, name string, value string) {
 	c.SetCookie(&http.Cookie{
-		Name:     name,
-		Value:    value,
-		Expires:  time.Now().Add(24 * time.Hour),
-		HttpOnly: true,
-		Domain:   "localhost",
-		Path:     "/",
-		Secure:   true,
+		Name:    name,
+		Value:   value,
+		Expires: time.Now().Add(24 * time.Hour),
+		Secure:  true,
+		Domain:  os.Getenv("DOMAIN"),
+		Path:    "/",
 	})
 }
