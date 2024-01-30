@@ -8,9 +8,14 @@ import (
 )
 
 type HomeHandler struct {
+	DB db.DB
 }
 
 func (h HomeHandler) HandleHomeShow(c echo.Context) error {
 	user := c.Get("user").(*model.User)
-	return Render(c, pages.Home(user, db.TodoList))
+	todoList, err := h.DB.GetTodoList()
+	if err != nil {
+		return err
+	}
+	return Render(c, pages.Home(user, todoList))
 }

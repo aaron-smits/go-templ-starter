@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: some-postgres
+    image: postgres
+    env_file:
+      - .env
+    environment:
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - '5432:5432'
+# Great solution for the startup problem I was having I found on https://stackoverflow.com/questions/35069027/
+# Instead of just a raw depends_on, this will wait for the postgres container to be healthy before starting the web container
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+
+  web:
+    env_file:
+      - .env
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - '8080:8080'
+    volumes:
+      - .:/usr/src/app
+    command: ./bin/templ-starter 
+    depends_on:
+      db:
+      # Specify that the web container should wait for the db container to be healthy before starting
+      # This is the important part
+        condition: service_healthy
+
+
+volumes:
+  postgres:

@@ -6,11 +6,13 @@ import (
 	"os"
 
 	"github.com/labstack/echo/v4"
-
 	supa "github.com/nedpals/supabase-go"
+
+	"github.com/aaron-smits/templ-starter/db"
 )
 
 type UserHandler struct {
+	DB db.DB
 }
 
 func (h UserHandler) HandleUserLoginPost(c echo.Context) error {
