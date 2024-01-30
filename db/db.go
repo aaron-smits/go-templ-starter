@@ -87,10 +87,10 @@ func (DB *PostgresDB) AddTodo(todo model.Todo) error {
 	fmt.Println("This is the todo: ", todo)
 	query := "INSERT INTO todos (title, body, done, user_id) VALUES ($1, $2, $3, $4)"
 	result, err := DB.DB.Exec(query, todo.Title, todo.Body, todo.Done, todo.UserID)
+	fmt.Println("This is the result: ", result)
 	if err != nil {
 		return err
 	}
-	fmt.Println("This is the result: ", result)
 	return nil
 }
 
