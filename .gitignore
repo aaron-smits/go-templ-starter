@@ -1,4 +1,4 @@
-.env
+.env*
 bin*
 node_modules*
 assets/dist*

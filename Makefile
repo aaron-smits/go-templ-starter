@@ -3,10 +3,18 @@ build:
 	@templ generate
 	@go mod tidy
 	@go fmt ./...	
-	@go build -o bin/templ-starter cmd/main.go
-run:
+	@go build -o bin/templ-starter cmd/*.go
+dev:
 	@templ fmt .
 	@templ generate
 	@go mod tidy
 	@go fmt ./...	
-	@go run cmd/main.go
+	@go build -o bin/templ-starter cmd/*.go
+	@ENV=dev ./bin/templ-starter
+prod:
+	@templ fmt .
+	@templ generate
+	@go mod tidy
+	@go fmt ./...
+	@go build -o bin/templ-starter cmd/*.go
+	@flyctl deploy

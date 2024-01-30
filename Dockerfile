@@ -1,6 +1,9 @@
-FROM golang:1.20.6
+FROM golang:1.21.6
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY ./cmd ..
+COPY /bin/templ-starter /templ-starter
 
+EXPOSE 8080
+
+CMD ["/templ-starter"]
