@@ -8,6 +8,8 @@ jobs:
     build_deploy:
         name: "🚀 Build and Deploy to Prod"
         runs-on: ubuntu-latest
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         outputs:
             url: ${{ steps.deploy.outputs.url }}
         environment:
@@ -26,8 +28,6 @@ jobs:
               uses: superfly/flyctl-actions/setup-flyctl@master
             - name: Make Prod
               run: make prod
-              env:
-                FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
             - name: Set fly.io deploymentURL
               id: deploy
               run: echo "url=https://$(fly status -a templ-starter --json | jq -r '.Hostname')" >> $GITHUB_OUTPUT
