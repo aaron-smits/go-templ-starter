@@ -15,9 +15,15 @@ func main() {
 	app.Use(middleware.Logger())
 	app.Use(middleware.Recover())
 	// Handlers
-	userHandler := handlers.UserHandler{}
-	homeHandler := handlers.HomeHandler{}
-	todoHandler := handlers.TodoHandler{}
+	userHandler := handlers.UserHandler{
+		DB: s.DB,
+	}
+	homeHandler := handlers.HomeHandler{
+		DB: s.DB,
+	}
+	todoHandler := handlers.TodoHandler{
+		DB: s.DB,
+	}
 	// Groups
 	auth := app.Group("/api/auth")
 	todo := app.Group("/api/todo")
@@ -31,8 +37,8 @@ func main() {
 	auth.POST("/logout", handlers.WithAuth(userHandler.HandleUserLogoutPost))
 
 	todo.POST("/", handlers.WithAuth(todoHandler.HandleTodoPost))
-	todo.PUT("/:id", handlers.WithAuth(todoHandler.HandleTodoPut))
-	todo.DELETE("/:id", handlers.WithAuth(todoHandler.HandleTodoDelete))
+	// todo.PUT("/:id", handlers.WithAuth(todoHandler.HandleTodoPut))
+	// todo.DELETE("/:id", handlers.WithAuth(todoHandler.HandleTodoDelete))
 
-	app.Logger.Fatal(app.Start(":" + s.config.Port))
+	app.Logger.Fatal(app.Start(":" + s.Config.Port))
 }
