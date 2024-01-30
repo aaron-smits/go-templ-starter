@@ -11,7 +11,7 @@ We use the following tools:
 | Templating     | [templ](https://github.com/a-h/templ)                                      |
 | JavaScript     | [HTMX](https://htmx.org/)                                                  |
 | CSS            | [Tailwind CSS](https://tailwindcss.com/)                                   |
-| Database       | [Supabase](https://supabase.com/), [PostgreSQL](https://www.postgresql.org/) |
+| Database/Auth  | [Supabase](https://supabase.com/), [PostgreSQL](https://www.postgresql.org/) |
 | Build Tools    | [Docker](https://www.docker.com/), [Make](https://www.gnu.org/software/make/), [GitHub Actions](https://docs.github.com/en/actions) |
 
 ## todo
