@@ -74,7 +74,7 @@ func (DB *PostgresDB) GetTodoList() ([]model.Todo, error) {
 	var todos []model.Todo
 	for rows.Next() {
 		t := model.Todo{}
-		if err := rows.Scan(&t.ID, &t.Title, &t.Done, &t.UserID); err != nil {
+		if err := rows.Scan(&t.ID, &t.Title, &t.Body, &t.Done, &t.UserID); err != nil {
 			return nil, err
 		}
 		todos = append(todos, t)
