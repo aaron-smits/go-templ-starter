@@ -30,7 +30,7 @@ func (h TodoHandler) HandleTodoPost(c echo.Context) error {
 	// append the new todo to the list
 	todoErr := h.DB.AddTodo(todo)
 	if todoErr != nil {
-		return err
+		return todoErr
 	}
 	todoList, err := h.DB.GetTodoList()
 	if err != nil {
