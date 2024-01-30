@@ -11,6 +11,8 @@ dev:
 	@go fmt ./...	
 	@go build -o bin/templ-starter cmd/*.go
 	@ENV=dev ./bin/templ-starter
+watch:
+	@air 
 prod:
 	@templ fmt .
 	@templ generate
