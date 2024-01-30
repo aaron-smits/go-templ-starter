@@ -2,22 +2,18 @@ package main
 
 import (
 	"github.com/aaron-smits/templ-starter/handlers"
-	"github.com/joho/godotenv"
-	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
-	app := echo.New()
+	s, err := NewServer()
+	if err != nil {
+		panic(err)
+	}
+	app := s.app
 	// Middleware
 	app.Use(middleware.Logger())
 	app.Use(middleware.Recover())
-	// Load .env file
-	err := godotenv.Load()
-	if err != nil {
-		app.Logger.Fatal(err)
-	}
-
 	// Handlers
 	userHandler := handlers.UserHandler{}
 	homeHandler := handlers.HomeHandler{}
@@ -38,5 +34,5 @@ func main() {
 	todo.PUT("/:id", handlers.WithAuth(todoHandler.HandleTodoPut))
 	todo.DELETE("/:id", handlers.WithAuth(todoHandler.HandleTodoDelete))
 
-	app.Logger.Fatal(app.Start(":5173"))
+	app.Logger.Fatal(app.Start(":" + s.config.Port))
 }
