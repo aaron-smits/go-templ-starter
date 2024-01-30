@@ -19,4 +19,11 @@ prod:
 	@go mod tidy
 	@go fmt ./...
 	@go build -o bin/templ-starter cmd/*.go
-	@flyctl deploy
+	@flyctl deploy --dockerfile Dockerfile.prod
+docker:
+	@templ fmt .
+	@templ generate
+	@go mod tidy
+	@go fmt ./...	
+	@go build -o bin/templ-starter cmd/*.go
+	@docker-compose up
