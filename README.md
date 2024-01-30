@@ -16,19 +16,22 @@ We use the following tools:
 
 ## todo
 
-#### p0
+### p0
 
-- [ ] Set up the database on Supabase
-- [ ] Create database handlers in db package
+- [ ] Update frontend styling
+  - [ ] Header/sidebar
+  - [ ] Footer
+  - [ ] Space between todo cards
+  - [ ] Light/dark modes
 
-#### p1
+### p1
 
-- [ ] Add a `seed` command to the Makefile
+- [ ] Add a `seed` command to the Makefile to seed the dev database (postgres docker container)
 
-#### p2
+### p2
 
 - [ ] Write e2e tests
 - [ ] Write unit tests
 - [ ] Add a `test` command to the Makefile
 
-#### p3
+### p3
