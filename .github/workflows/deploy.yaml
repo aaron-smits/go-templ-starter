@@ -19,7 +19,6 @@ jobs:
             - run: templ -v
             - name: Setup Flyctl
               uses: superfly/flyctl-actions/setup-flyctl@master
-
             - name: Make Prod
               run: make prod
               env:

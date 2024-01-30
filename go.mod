@@ -3,7 +3,7 @@ module github.com/aaron-smits/templ-starter
 go 1.21.6
 
 require (
-	github.com/a-h/templ v0.2.513
+	github.com/a-h/templ v0.2.543
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/lib/pq v1.10.9
