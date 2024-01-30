@@ -2,11 +2,9 @@
 
 p0
 
-- [] Finish implementing todo mvc handlers and templates
 
 p1
 
-- [] Test and deploy the app somewhere
 - [] Add a CI/CD pipeline
 - [] Add a README.md
 
