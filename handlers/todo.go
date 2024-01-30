@@ -39,33 +39,18 @@ func (h TodoHandler) HandleTodoPost(c echo.Context) error {
 	return Render(c, components.TodoList(todoList))
 }
 
-// func (h TodoHandler) HandleTodoPut(c echo.Context) error {
-// 	todo := new(model.Todo)
-// 	err := c.Bind(todo)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	// Find the todo in the list with the matching ID
-// 	for i, t := range db.TodoList {
-// 		if t.ID == todo.ID {
-// 			db.TodoList[i] = *todo
-// 		}
-// 	}
-// 	return Render(c, components.TodoList(db.TodoList))
-// }
-
-// func (h TodoHandler) HandleTodoDelete(c echo.Context) error {
-// 	id := c.Param("id")
-// 	// convert id to int
-// 	strId, err := strconv.Atoi(id)
-// 	if err != nil {
-// 		return err
-// 	}
-// 	// Find the todo in the list with the matching ID
-// 	for i, t := range db.TodoList {
-// 		if t.ID == strId {
-// 			db.TodoList = append(db.TodoList[:i], db.TodoList[i+1:]...)
-// 		}
-// 	}
-// 	return Render(c, components.TodoList(db.TodoList))
-// }
+func (h TodoHandler) HandleTodoDelete(c echo.Context) error {
+	id := c.Param("id")
+	if id == "" {
+		return c.String(400, "ID is required")
+	}
+	err := h.DB.DeleteTodo(id)
+	if err != nil {
+		return err
+	}
+	todoList, err := h.DB.GetTodoList()
+	if err != nil {
+		return err
+	}
+	return Render(c, components.TodoList(todoList))
+}

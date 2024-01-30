@@ -20,7 +20,7 @@ type DB interface {
 	// AddTodo adds a todo to the database.
 	AddTodo(model.Todo) error
 	// DeleteTodo deletes a todo from the database.
-	// DeleteTodo() error
+	DeleteTodo(id string) error
 	// // UpdateTodo updates a todo in the database.
 	// UpdateTodo() error
 }
@@ -94,7 +94,7 @@ func (DB *PostgresDB) AddTodo(todo model.Todo) error {
 	return nil
 }
 
-func (DB *PostgresDB) DeleteTodo(id int) error {
+func (DB *PostgresDB) DeleteTodo(id string) error {
 	_, err := DB.DB.Query("DELETE FROM todos WHERE id = $1", id)
 	if err != nil {
 		return err
