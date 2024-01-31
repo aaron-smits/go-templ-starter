@@ -12,6 +12,7 @@ import (
 )
 
 // DB is a wrapper around the database connection.
+// Currently, you can create, read, and delete todos.
 type DB interface {
 	// CreateTodoTable creates the todo table in the database.
 	CreateTodoTable() error
@@ -21,18 +22,19 @@ type DB interface {
 	AddTodo(model.Todo) error
 	// DeleteTodo deletes a todo from the database.
 	DeleteTodo(id string) error
-	// // UpdateTodo updates a todo in the database.
-	// UpdateTodo() error
 }
 
+// type for postgres client. This is currently used for the DB handling
 type PostgresDB struct {
 	DB *sql.DB
 }
 
+// type for supabase client in case we want to use it for SQL queries
 type SupabaseDB struct {
 	DB *supa.Client
 }
 
+// NewPostgresDB creates a new PostgresDB instance.
 func NewPostgresDB() (*PostgresDB, error) {
 	connectionString := os.Getenv("POSTGRES_CONNECTION_STRING")
 	if connectionString == "" {
@@ -66,7 +68,8 @@ func (DB *PostgresDB) CreateTodoTable() error {
 }
 
 func (DB *PostgresDB) GetTodoList() ([]model.Todo, error) {
-	rows, err := DB.DB.Query("SELECT * FROM todos")
+	query := "SELECT * FROM todos"
+	rows, err := DB.DB.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -84,10 +87,8 @@ func (DB *PostgresDB) GetTodoList() ([]model.Todo, error) {
 }
 
 func (DB *PostgresDB) AddTodo(todo model.Todo) error {
-	fmt.Println("This is the todo: ", todo)
 	query := "INSERT INTO todos (title, body, done, user_id) VALUES ($1, $2, $3, $4)"
-	result, err := DB.DB.Query(query, todo.Title, todo.Body, todo.Done, todo.UserID)
-	fmt.Println("This is the result: ", result)
+	_, err := DB.DB.Query(query, todo.Title, todo.Body, todo.Done, todo.UserID)
 	if err != nil {
 		return err
 	}
@@ -95,17 +96,19 @@ func (DB *PostgresDB) AddTodo(todo model.Todo) error {
 }
 
 func (DB *PostgresDB) DeleteTodo(id string) error {
-	_, err := DB.DB.Query("DELETE FROM todos WHERE id = $1", id)
+	query := "DELETE FROM todos WHERE id = $1"
+	_, err := DB.DB.Query(query, id)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (DB *PostgresDB) UpdateTodo(todo model.Todo) error {
-	_, err := DB.DB.Exec("UPDATE todos SET title = $1, body = $2, done = $3 WHERE id = $4", todo.Title, todo.Body, todo.Done, todo.ID)
-	if err != nil {
-		return err
-	}
-	return nil
-}
+// func (DB *PostgresDB) UpdateTodo(todo model.Todo) error {
+// 	query := "UPDATE todos SET title = $1, body = $2, done = $3 WHERE id = $4"
+// 	_, err := DB.DB.Query(query, todo.Title, todo.Body, todo.Done, todo.ID)
+// 	if err != nil {
+// 		return err
+// 	}
+// 	return nil
+// }

@@ -17,6 +17,8 @@ func Render(c echo.Context, component templ.Component) error {
 	return component.Render(c.Request().Context(), c.Response())
 }
 
+// Authentication middleware using Supabase
+// This will set the user in the context if they are logged in
 func WithAuth(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		supabaseURL := os.Getenv("SUPABASE_URL")

@@ -29,7 +29,6 @@ func main() {
 	todo := app.Group("/api/todo")
 
 	// Routes
-
 	app.GET("/", handlers.WithAuth(homeHandler.HandleHomeShow))
 
 	auth.POST("/login/github", userHandler.HandleUserLoginPost)
@@ -37,8 +36,8 @@ func main() {
 	auth.POST("/logout", handlers.WithAuth(userHandler.HandleUserLogoutPost))
 
 	todo.POST("/", handlers.WithAuth(todoHandler.HandleTodoPost))
-	// todo.PUT("/:id", handlers.WithAuth(todoHandler.HandleTodoPut))
 	todo.DELETE("/:id", handlers.WithAuth(todoHandler.HandleTodoDelete))
+	// todo.PUT("/:id", handlers.WithAuth(todoHandler.HandleTodoPut))
 
 	app.Logger.Fatal(app.Start(":" + s.Config.Port))
 }

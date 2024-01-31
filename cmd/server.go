@@ -39,3 +39,10 @@ func NewServerWithConfig(config Config) (*Server, error) {
 		Config: config,
 	}, nil
 }
+
+func NewServerWithDB(db db.DB) (*Server, error) {
+	return &Server{
+		app: echo.New(),
+		DB:  db,
+	}, nil
+}

@@ -8,17 +8,18 @@ import (
 )
 
 type Config struct {
-	Env         string
-	SupabaseURL string
-	SupabaseKey string
-	Port        string
-	BaseUrl     string
-	Domain      string
+	Env                      string
+	SupabaseURL              string
+	SupabaseKey              string
+	Port                     string
+	BaseUrl                  string
+	Domain                   string
+	PostgresConnectionString string
 }
 
 func NewConfig() Config {
 	if os.Getenv("ENV") == "dev" {
-		err := godotenv.Load()
+		err := godotenv.Load(".env")
 		if err != nil {
 			fmt.Printf("Error loading dotenv file: %s\n", err)
 			os.Exit(1)
@@ -31,12 +32,13 @@ func NewConfig() Config {
 		}
 	}
 	return Config{
-		Env:         os.Getenv("ENV"),
-		SupabaseURL: os.Getenv("SUPABASE_URL"),
-		SupabaseKey: os.Getenv("SUPABASE_KEY"),
-		Port:        os.Getenv("PORT"),
-		BaseUrl:     os.Getenv("BASE_URL"),
-		Domain:      os.Getenv("DOMAIN"),
+		Env:                      os.Getenv("ENV"),
+		SupabaseURL:              os.Getenv("SUPABASE_URL"),
+		SupabaseKey:              os.Getenv("SUPABASE_KEY"),
+		Port:                     os.Getenv("PORT"),
+		BaseUrl:                  os.Getenv("BASE_URL"),
+		Domain:                   os.Getenv("DOMAIN"),
+		PostgresConnectionString: os.Getenv("POSTGRES_CONNECTION_STRING"),
 	}
 }
 
