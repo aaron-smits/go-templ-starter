@@ -14,7 +14,6 @@ func main() {
 	// Middleware
 	app.Use(middleware.Logger())
 	app.Use(middleware.Recover())
-	app.Use(middleware.CORS())
 	// Handlers
 	userHandler := handlers.UserHandler{
 		DB: s.DB,

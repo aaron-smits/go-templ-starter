@@ -40,6 +40,7 @@ func (h UserHandler) HandleUserLoginPost(c echo.Context) error {
 }
 
 func (h UserHandler) HandleUserLoginCallback(c echo.Context) error {
+	c.Request().Header.Set("Access-Control-Allow-Origin", "*")
 	supabaseURL := os.Getenv("SUPABASE_URL")
 	supabaseKey := os.Getenv("SUPABASE_KEY")
 	supabase := supa.CreateClient(supabaseURL, supabaseKey)
