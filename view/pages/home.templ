@@ -8,27 +8,32 @@ import (
 
 // todo: pass in a struct with the user info and the todos
 templ Home(user *model.User, todos []model.Todo) {
-	@layout.Base() {
-		<div>
+	@layout.Base(true) {
+		<div class="pt-3">
 			<p>
 				Welcome, { user.Email }
 			</p>
-			<form action="/api/auth/logout" method="POST">
-				<button type="submit" value="logout">
-					Logout
-				</button>
-			</form>
 			<form
 				hx-post="/api/todo/"
 				hx-replace-url="false"
 				hx-swap="innerHTML"
 				hx-target="#todo-list"
 			>
-				<input type="text" name="title" placeholder="Title"/>
-				<input type="text" name="body" placeholder="Body"/>
-				<button type="submit" value="add">
-					Add Todo
-				</button>
+				<div class="grid gap-6 mb-6 md:grid-cols-2">
+					<div>
+						<label for="title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Title</label>
+						<input required type="text" id="title" name="title" placeholder="Title" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+					</div>
+					<div>
+						<label for="body" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Body</label>
+						<input required type="text" id="body" name="body" placeholder="Body" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"/>
+					</div>
+				</div>
+				<div class="mb-6">
+					<button type="submit" value="add">
+						Add Todo
+					</button>
+				</div>
 			</form>
 			@components.TodoList(todos)
 		</div>
@@ -36,16 +41,11 @@ templ Home(user *model.User, todos []model.Todo) {
 }
 
 templ LoggedOutHome () {
-	@layout.Base() {
-		<div>
+	@layout.Base(false) {
+		<div class="pt-3">
 			<p>
 				Welcome, Guest
 			</p>
-			<form action="/api/auth/login/github" method="POST">
-				<button type="submit" value="github">
-					Login with Github
-				</button>
-			</form>
 		</div>
 	}
 }

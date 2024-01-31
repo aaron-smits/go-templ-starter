@@ -1,6 +1,10 @@
 package layout
 
-templ Base() {
+import (
+	"github.com/aaron-smits/templ-starter/view/components"
+)
+
+templ Base(isLoggedIn bool) {
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
@@ -14,8 +18,8 @@ templ Base() {
 			<title>Todo Templ</title>
 		</head>
 		<body>
-			<div id="content" class="flex items-center justify-center min-h-screen">
-			TESTTTTTTTTTTTTTTTTTT
+			@components.Navbar(isLoggedIn)
+			<div id="content" class="flex items-start justify-center min-h-screen">
 				<content>
 					{ children... }
 				</content>
