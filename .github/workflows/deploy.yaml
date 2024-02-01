@@ -25,6 +25,14 @@ jobs:
       - name: Get templ
         run: go install github.com/a-h/templ/cmd/templ@latest
       - run: templ -v
+      - name: Create .env file from env vars
+        run: |
+          echo "POSTGRES_CONNECTION_STRING=${POSTGRES_CONNECTION_STRING}" > .env
+          echo "SUPABASE_URL=${SUPABASE_URL}" >> .env
+          echo "SUPABASE_KEY=${SUPABASE_KEY}" >> .env
+          echo "PORT=${PORT}" >> .env
+          echo "BASE_URL=${BASE_URL}" >> .env
+          echo "DOMAIN=${DOMAIN}" >> .env
       - name: Test
         run: make test
   deploy:
