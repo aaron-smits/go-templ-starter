@@ -29,8 +29,8 @@ templ Todo(todo model.Todo) {
 					hx-delete={ makeIdRoute(todo.ID) }
 					hx-trigger="click"
 					hx-confirm="Delete this todo?"
-					hx-target={ makeTargetSelector(todo.ID) }
-					hx-swap="innerHTML"
+					hx-target="#todo-list"
+					hx-swap="outerHTML"
 					hx-replace-url="false"
 				>
 					Delete
