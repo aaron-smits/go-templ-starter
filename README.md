@@ -47,20 +47,12 @@ We use the following tools:
 
 ### p0
 
-- [ ] Update frontend styling
-  - [ ] Header/sidebar
-  - [ ] Footer
-  - [ ] Space between todo cards
-  - [ ] Light/dark modes
+- [ ] Light/dark modes
 
 ### p1
 
-- [ ] Add a `seed` command to the Makefile to seed the dev database (postgres docker container)
+- [ ] Write unit tests for other packages besides the db package
 
 ### p2
-
-- [ ] Write e2e tests
-- [ ] Write unit tests
-- [ ] Add a `test` command to the Makefile
 
 ### p3

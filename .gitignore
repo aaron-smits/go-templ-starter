@@ -3,3 +3,8 @@ bin*
 node_modules*
 assets/dist*
 tmp*
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+tests/playwright-report/index.html

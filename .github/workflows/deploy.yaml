@@ -1,33 +1,42 @@
 name: "🚀 Build and Deploy to Prod"
 on:
-    push:
-        branches:
-            - "main"
-    workflow_dispatch:
-jobs:
-    build_deploy:
-        name: "🚀 Build and Deploy to Prod"
-        runs-on: ubuntu-latest
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-        outputs:
-            url: ${{ steps.deploy.outputs.url }}
-        environment:
-            name: fly.io
-            url: ${{ steps.deploy.outputs.url }}
-        steps:
-            - uses: actions/checkout@v3
-            - name: Setup Go
-              uses: actions/setup-go@v5
-              with:
-                go-version: '^1.21.6'
-            - name: Get templ
-              run: go install github.com/a-h/templ/cmd/templ@latest
-            - run: templ -v
-            - name: Setup Flyctl
-              uses: superfly/flyctl-actions/setup-flyctl@master
-            - name: Make Prod
-              run: make prod
-            - name: Set fly.io deploymentURL
-              id: deploy
-              run: echo "url=https://$(flyctl status -a templ-starter --json | jq -r '.Hostname')" >> $GITHUB_OUTPUT
+  push:
+    branches:
+        - "main"
+  workflow_dispatch:
+jobs:      
+  test:
+    name: "🧪 Test"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '^1.21.6'
+      - name: Download build artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build
+      - name: Get templ
+        run: go install github.com/a-h/templ/cmd/templ@latest
+      - run: templ -v
+      - name: Test
+        run: make test
+  deploy:
+    name: "🚀 Deploy to Prod"
+    runs-on: ubuntu-latest
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+    outputs:
+      url: ${{ steps.deploy.outputs.url }}
+    environment:
+      name: fly.io
+      url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - name: Make Prod
+        run: make prod
+      - name: Set fly.io deploymentURL
+        id: deploy
+        run: echo "url=https://$(flyctl status -a templ-starter --json | jq -r '.Hostname')" >> $GITHUB_OUTPUT

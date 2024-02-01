@@ -4,26 +4,26 @@ build:
 	@go mod tidy
 	@go fmt ./...	
 	@go build -o bin/templ-starter cmd/*.go
+
 dev:
-	@templ fmt .
-	@templ generate
-	@go mod tidy
-	@go fmt ./...	
-	@go build -o bin/templ-starter cmd/*.go
+	@make build
 	@ENV=dev ./bin/templ-starter
+
 watch:
+	@make build
 	@air 
-prod:
-	@templ fmt .
-	@templ generate
-	@go mod tidy
-	@go fmt ./...
-	@go build -o bin/templ-starter cmd/*.go
-	@flyctl deploy --dockerfile Dockerfile.prod
+
+test:
+	@docker compose down --remove-orphans
+	@make build
+	@docker compose up -d
+	@cd tests && npx playwright test
+
 docker:
-	@templ fmt .
-	@templ generate
-	@go mod tidy
-	@go fmt ./...	
-	@go build -o bin/templ-starter cmd/*.go
+	@docker compose down --remove-orphans
+	@make build
 	@docker-compose up
+prod:
+	@make build
+	@flyctl deploy --dockerfile Dockerfile.prod
+
